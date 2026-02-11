@@ -1,4 +1,3 @@
-import * as vscode from 'vscode';
 import {
     createConnection,
     TextDocuments,
@@ -13,7 +12,6 @@ const startMsg = `Sample server running in node ${process.version}`;
 connection.console.info(startMsg);
 console.error('=== SERVER DEBUG: Server initialized ===');
 console.error(startMsg);
-vscode.window.showInformationMessage("Hello VS Code");
 
 let documents: TextDocuments<TextDocument>;
 

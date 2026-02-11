@@ -1,14 +1,21 @@
 {
-	"name": "sample-language-server",
-	"displayName": "Sample Language Server",
-	"description": "A sample Language Server implementation",
-	"version": "0.0.1",
-	"private": true,
-	"publisher": "sample",
-	"main": "./client/out/extention.js",
+	"name": "lsp-sample",
+	"description": "A language server example",
+	"author": "ryu-sato",
+	"license": "MIT",
+	"version": "1.0.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ryu-sato/vscode-language-server-sandbox"
+	},
+	"publisher": "vscode-language-server-sandbox",
+	"engines": {
+		"vscode": "^1.100.0"
+	},
 	"activationEvents": [
-		"onStartupFinished"
+		"onLanguage:plaintext"
 	],
+	"main": "./client/out/extension",
 	"contributes": {
 		"commands": []
 	},
@@ -20,7 +27,7 @@
 		"compile": "tsc --build",
 		"watch": "tsc --build --watch",
 		"lint": "eslint",
-		"postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+		"postinstall": "cd client && pnpm install && cd ../server && pnpm install && cd ..",
 		"test": "sh ./scripts/e2e.sh"
 	}
 }
