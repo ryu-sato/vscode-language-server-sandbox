@@ -1,10 +1,15 @@
-import { ExtensionContext, Uri } from 'vscode';
+import * as path from 'path';
+import { ExtensionContext } from 'vscode';
 import { LanguageClient, LanguageClientOptions, RevealOutputChannelOn, ServerOptions, TransportKind } from 'vscode-languageclient/node';
 
 let client: LanguageClient;
 
 export async function activate(context: ExtensionContext) {
-    const serverModule = Uri.joinPath(context.extensionUri, 'server', 'out', 'server.js').fsPath;
+    console.error('=== CLIENT DEBUG: activate() called ===');
+    const serverModule = context.asAbsolutePath(
+        path.join('server', 'out', 'server.js')
+    );
+    console.error(`=== CLIENT DEBUG: serverModule path = ${serverModule} ===`);
 
     const serverOptions: ServerOptions = {
         run: {
@@ -26,8 +31,8 @@ export async function activate(context: ExtensionContext) {
 
     const clientOptions: LanguageClientOptions = {
         documentSelector: [
-            { scheme: 'file' },
-            { scheme: 'untitled' },
+            { scheme: 'file', language: 'plaintext' },
+            { scheme: 'untitled', language: 'plaintext' },
         ],
 		// 警告パネルでの表示名
 		diagnosticCollectionName: 'sample',
@@ -37,10 +42,13 @@ export async function activate(context: ExtensionContext) {
     };
 
     try {
+        console.error('=== CLIENT DEBUG: Creating LanguageClient ===');
         client = new LanguageClient('LSPSampleExample', 'Sample LSP Server', serverOptions, clientOptions);
+        console.error('=== CLIENT DEBUG: Starting client ===');
         await client.start();
+        console.error('=== CLIENT DEBUG: Client started successfully ===');
     } catch (error) {
-        console.error('Failed to start language client:', error);
+        console.error('=== CLIENT DEBUG: Failed to start language client ===', error);
     }
 }
 

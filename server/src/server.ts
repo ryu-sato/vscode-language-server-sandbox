@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import {
     createConnection,
     TextDocuments,
@@ -8,11 +9,16 @@ import {
 } from 'vscode-languageserver-textdocument';
 
 const connection = createConnection();
-connection.console.info(`Sample server running in node ${process.version}`);
+const startMsg = `Sample server running in node ${process.version}`;
+connection.console.info(startMsg);
+console.error('=== SERVER DEBUG: Server initialized ===');
+console.error(startMsg);
+vscode.window.showInformationMessage("Hello VS Code");
 
 let documents: TextDocuments<TextDocument>;
 
 connection.onInitialize(() => {
+	console.error('=== SERVER DEBUG: onInitialize called ===');
     documents = new TextDocuments(TextDocument);
     if (documents == null) {
         throw new Error('Failed to create TextDocuments manager.');

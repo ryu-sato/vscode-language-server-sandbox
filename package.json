@@ -1,4 +1,17 @@
 {
+	"name": "sample-language-server",
+	"displayName": "Sample Language Server",
+	"description": "A sample Language Server implementation",
+	"version": "0.0.1",
+	"private": true,
+	"publisher": "sample",
+	"main": "./client/out/extention.js",
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"contributes": {
+		"commands": []
+	},
 	"devDependencies": {
 		"typescript": "^5.9.3"
 	},

@@ -1,11 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const vscode = require("vscode");
 const node_1 = require("vscode-languageserver/node");
 const vscode_languageserver_textdocument_1 = require("vscode-languageserver-textdocument");
 const connection = (0, node_1.createConnection)();
-connection.console.info(`Sample server running in node ${process.version}`);
+const startMsg = `Sample server running in node ${process.version}`;
+connection.console.info(startMsg);
+console.error('=== SERVER DEBUG: Server initialized ===');
+console.error(startMsg);
+vscode.window.showInformationMessage("Hello VS Code");
 let documents;
 connection.onInitialize(() => {
+    console.error('=== SERVER DEBUG: onInitialize called ===');
     documents = new node_1.TextDocuments(vscode_languageserver_textdocument_1.TextDocument);
     if (documents == null) {
         throw new Error('Failed to create TextDocuments manager.');
