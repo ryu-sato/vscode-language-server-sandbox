@@ -1,5 +1,5 @@
 import { ExtensionContext, Uri } from 'vscode';
-import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
+import { LanguageClient, LanguageClientOptions, RevealOutputChannelOn, ServerOptions, TransportKind } from 'vscode-languageclient/node';
 
 let client: LanguageClient;
 
@@ -29,6 +29,11 @@ export async function activate(context: ExtensionContext) {
             { scheme: 'file' },
             { scheme: 'untitled' },
         ],
+		// 警告パネルでの表示名
+		diagnosticCollectionName: 'sample',
+		revealOutputChannelOn: RevealOutputChannelOn.Never,
+		initializationOptions: {},
+		progressOnInitialization: true,
     };
 
     try {
