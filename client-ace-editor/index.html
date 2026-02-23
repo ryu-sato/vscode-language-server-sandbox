@@ -29,11 +29,12 @@ helloWorld();</div>
     <script src="node_modules/ace-builds/src-min-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
     <script src="node_modules/ace-linters/build/ace-linters.js" type="text/javascript" charset="utf-8"></script>
     <script src="node_modules/ace-linters/build/ace-language-client.js" type="text/javascript" charset="utf-8"></script>
+    <script src="node_modules/ace-linters/build/language-client.js" type="text/javascript" charset="utf-8"></script>
     <script>
         // Create a web socket
         const serverData = {
-            module: () => import("ace-linters/build/language-client"),
-            modes: "json|json5",
+            module: () => Promise.resolve(globalThis),
+            modes: "javascript",
             type: "socket",
             socket: new WebSocket("ws://127.0.0.1:3000/exampleServer"), // address of your websocket server
         }

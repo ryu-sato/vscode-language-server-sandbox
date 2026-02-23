@@ -3,7 +3,10 @@
     "allow": [
       "WebFetch(domain:github.com)",
       "Bash(pnpm install:*)",
-      "Bash(npx tsc --build)"
+      "Bash(npx tsc --build)",
+      "Bash(npm run compile:*)",
+      "Bash(npm run:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

@@ -25,7 +25,13 @@ class WebSocketMessageReader extends AbstractMessageReader {
         socket.on('message', (data) => {
             try {
                 if (this.callback) {
-                    this.callback(JSON.parse(data.toString()) as Message);
+                    const str = Buffer.isBuffer(data)
+                        ? data.toString('utf8')
+                        : data.toString();
+                    // LSP wire format: "Content-Length: N\r\n\r\n{...json...}"
+                    const bodyStart = str.indexOf('\r\n\r\n');
+                    const json = bodyStart !== -1 ? str.slice(bodyStart + 4) : str;
+                    this.callback(JSON.parse(json) as Message);
                 }
             } catch (e) {
                 this.fireError(e as Error);
@@ -50,7 +56,9 @@ class WebSocketMessageWriter extends AbstractMessageWriter {
 
     write(msg: Message): Promise<void> {
         return new Promise((resolve, reject) => {
-            this.socket.send(JSON.stringify(msg), (err) => {
+            const json = JSON.stringify(msg);
+            const header = `Content-Length: ${Buffer.byteLength(json, 'utf8')}\r\n\r\n`;
+            this.socket.send(header + json, (err) => {
                 if (err) { reject(err); } else { resolve(); }
             });
         });
@@ -65,20 +73,20 @@ function setupConnection(connection: Connection): void {
     connection.console.info(`Sample server running in node ${process.version}`);
     console.error('=== SERVER DEBUG: Server initialized ===');
 
+    const documents = new TextDocuments(TextDocument);
+    documents.listen(connection);
+    documents.onDidOpen((event) => {
+        connection.console.log(`Document opened: ${event.document.uri}`);
+    });
+    documents.onDidChangeContent((change) => {
+        connection.console.log(`Document changed: ${change.document.uri}`);
+    });
+    documents.onDidClose((event) => {
+        connection.console.log(`Document closed: ${event.document.uri}`);
+    });
+
     connection.onInitialize(() => {
         console.error('=== SERVER DEBUG: onInitialize called ===');
-        const documents = new TextDocuments(TextDocument);
-        documents.listen(connection);
-        documents.onDidOpen((event) => {
-            connection.console.log(`Document opened: ${event.document.uri}`);
-        });
-        documents.onDidChangeContent((change) => {
-            connection.console.log(`Document changed: ${change.document.uri}`);
-        });
-        documents.onDidClose((event) => {
-            connection.console.log(`Document closed: ${event.document.uri}`);
-        });
-
         return {
             capabilities: {
                 textDocumentSync: {
