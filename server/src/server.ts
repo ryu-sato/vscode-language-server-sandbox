@@ -17,6 +17,10 @@ import {
 import { WebSocket, WebSocketServer } from 'ws';
 import { IncomingMessage } from 'http';
 
+process.on('unhandledRejection', (reason) => {
+    console.error('=== SERVER: Unhandled rejection (ignored):', reason);
+});
+
 class WebSocketMessageReader extends AbstractMessageReader {
     private callback: DataCallback | undefined;
 
@@ -68,18 +72,20 @@ class WebSocketMessageWriter extends AbstractMessageWriter {
 }
 
 function setupConnection(connection: Connection): void {
-    connection.console.info(`Sample server running in node ${process.version}`);
-    console.error('=== SERVER DEBUG: Server initialized ===');
+    console.error(`=== SERVER DEBUG: Server initialized (node ${process.version}) ===`);
 
     const documents = new TextDocuments(TextDocument);
     documents.listen(connection);
     documents.onDidOpen((event) => {
+        console.log("=== SERVER DEBUG: Document opened ===");
         connection.console.log(`Document opened: ${event.document.uri}`);
     });
     documents.onDidChangeContent((change) => {
+        console.log("=== SERVER DEBUG: Document content changed ===");
         connection.console.log(`Document changed: ${change.document.uri}`);
     });
     documents.onDidClose((event) => {
+        console.log("=== SERVER DEBUG: Document closed ===");
         connection.console.log(`Document closed: ${event.document.uri}`);
     });
 
