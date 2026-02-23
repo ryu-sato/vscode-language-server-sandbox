@@ -56,9 +56,7 @@ class WebSocketMessageWriter extends AbstractMessageWriter {
 
     write(msg: Message): Promise<void> {
         return new Promise((resolve, reject) => {
-            const json = JSON.stringify(msg);
-            const header = `Content-Length: ${Buffer.byteLength(json, 'utf8')}\r\n\r\n`;
-            this.socket.send(header + json, (err) => {
+            this.socket.send(JSON.stringify(msg), (err) => {
                 if (err) { reject(err); } else { resolve(); }
             });
         });
