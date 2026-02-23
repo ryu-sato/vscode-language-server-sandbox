@@ -11,6 +11,8 @@
   "license": "MIT",
   "packageManager": "pnpm@10.28.2",
   "dependencies": {
-    "ace-builds": "^1.43.6"
+    "ace-builds": "^1.43.6",
+    "ace-code": "^1.43.6",
+    "ace-linters": "^2.0.0"
   }
 }
