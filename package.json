@@ -28,6 +28,7 @@
 		"watch": "tsc --build --watch",
 		"lint": "eslint",
 		"postinstall": "cd client && pnpm install && cd ../server && pnpm install && cd ..",
-		"test": "sh ./scripts/e2e.sh"
+		"test": "sh ./scripts/e2e.sh",
+		"start-ws": "node server/out/server.js --ws"
 	}
 }
